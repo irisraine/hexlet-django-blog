@@ -7,6 +7,7 @@ authors = ["Iris-Raine <iris.raine.darkest.star@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.8"
 Django = "^4.1.5"
+python-dotenv = "^0.21.1"
 
 [tool.poetry.dev-dependencies]
 
