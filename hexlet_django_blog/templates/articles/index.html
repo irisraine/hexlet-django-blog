@@ -1,12 +1,25 @@
+{% extends 'layout/default.html' %}
+
+{% block title %}Список статей{% endblock %}
 {% block content %}
-    <h1>Список статей</h1>
-    {% for article in articles %}
-        <h2><a href="{% url 'article' article.id %}">{{ article.name }}</a></h2>
-        <div>{{ article.body|slice:":200" }}</div>
-    <form action="{% url 'articles_delete' article.id %}" method="post">
-        {% csrf_token %}
-        <input type="submit" value="Удалить статью">
-    </form>
-    {% endfor %}
-    <div><a href="{% url 'articles_create' %}">Добавить новую статью</a></div>
+    <div class="container">
+        <div class="row">
+            {% for article in articles %}
+            <div class="col-12 col-md-4 col-lg-3 mb-4">
+                <article class="border border-secondary rounded shadow bg-light h-100 d-flex flex-column bd-highlight p-2 mb-3" >
+                    <div class="p-2 bd-highlight"><h3><a class="link-primary text-decoration-none" href="{% url 'article' article.id %}">{{ article.name }}</a></h3></div>
+                    <div class="p-2 bd-highlight">{{ article.body|slice:":200" }}</div>
+                    <div class="mt-auto p-2 bd-highlight">
+                        <form action="{% url 'articles_delete' article.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Удалить статью</button>
+                        </form>
+                    </div>
+
+                </article>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
 {% endblock %}

@@ -7,7 +7,7 @@ from .forms import CommentArticleForm, ArticleForm
 
 class IndexView(View):
     def get(self, request, *args, **kwargs):
-        articles = Article.objects.all()[:15]
+        articles = Article.objects.all()[:20]
         return render(request, 'articles/index.html', context={
             'articles': articles,
         })

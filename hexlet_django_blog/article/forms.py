@@ -4,7 +4,7 @@ from .models import Article
 
 
 class CommentArticleForm(forms.Form):
-    content = forms.CharField(label='Комментарий')
+    content = forms.CharField(label='Текст комментария')
 
 
 class ArticleForm(ModelForm):
@@ -13,5 +13,5 @@ class ArticleForm(ModelForm):
         fields = ['name', 'body']
         labels = {
             'name': 'Имя',
-            'body': 'Текст комментария'
+            'body': 'Текст статьи'
         }

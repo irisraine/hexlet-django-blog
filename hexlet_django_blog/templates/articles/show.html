@@ -1,3 +1,18 @@
-<h1>{{ article.name }}</h1>
-<div>{{ article.body }}</div>
+{% extends 'layout/default.html' %}
 
+{% block content %}
+
+<div class="card">
+  <div class="card-header">
+    <i>Статья</i>
+  </div>
+  <div class="card-body">
+    <h1 class="card-title">{{ article.name }}</h1>
+    <p class="card-text">{{ article.body }}</p>
+    <a href="{% url 'articles_update' article.id %}" class="btn btn-warning" role="button">Отредактировать статью</a>
+    <a href="{% url 'comment_create' article.id %}" class="btn btn-success" role="button">Оставить комментарий</a>
+  </div>
+</div>
+
+
+{% endblock %}
