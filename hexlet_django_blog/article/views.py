@@ -1,15 +1,20 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-
+from django.db.models import Q
 from hexlet_django_blog.article.models import Article
 from .forms import CommentArticleForm, ArticleForm
 
 
 class IndexView(View):
     def get(self, request, *args, **kwargs):
-        articles = Article.objects.all()[:20]
+        query = request.GET.get('q', '')
+        if query:
+            articles = Article.objects.filter(Q(name__icontains=query))
+        else:
+            articles = Article.objects.all()[:16]
         return render(request, 'articles/index.html', context={
             'articles': articles,
+            'query': query,
         })
 
 

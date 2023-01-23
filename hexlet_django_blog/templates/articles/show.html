@@ -4,7 +4,10 @@
 
 <div class="card">
   <div class="card-header">
-    <i>Статья</i>
+    <div class="d-flex justify-content-between">
+      <div><i>Статья</i></div>
+      <div><i>Время размещения: {{ article.timestamp }}</i></div>
+    </div>
   </div>
   <div class="card-body">
     <h1 class="card-title">{{ article.name }}</h1>
@@ -13,6 +16,5 @@
     <a href="{% url 'comment_create' article.id %}" class="btn btn-success" role="button">Оставить комментарий</a>
   </div>
 </div>
-
 
 {% endblock %}
