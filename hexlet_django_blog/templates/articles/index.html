@@ -3,7 +3,7 @@
 {% block title %}Список статей{% endblock %}
 {% block content %}
     <div class="container">
-        <div class="row">
+        <div class="row md-3">
             {% if not articles %}
             <div>Статьи отсутствуют</div>
             {% endif %}
@@ -22,6 +22,40 @@
             </div>
             {% endfor %}
         </div>
+        {% if num_pages > 1 %}
+        <div class="row">
+            <div class="col">
+                <nav>
+                  <ul class="pagination justify-content-center">
+                    <li class="page-item {% if not articles.has_previous %}disabled{% endif %}">
+                      <a class="page-link" href="{% if articles.has_previous %}{% url 'articles' %}?page={{ articles.previous_page_number }}{% endif %}">Назад</a>
+                    </li>
+                        {% if articles.number|add:'-2' > 1 %}
+                        <li class="page-item">
+                            <a class="page-link" href="{% url 'articles' %}?page={{ articles.number|add:'-3' }}">...</a>
+                        </li>
+                        {% endif %}
+                        {% for page in articles.paginator.page_range %}
+                          <li class="page-item {% if page == articles.number %}active{% endif %}">
+                              {% if page > articles.number|add:'-3' and page < articles.number|add:'3' %}
+                              <a class="page-link" href="{% url 'articles' %}?page={{ page }}">{{ page }}</a>
+                              {% endif %}
+                          </li>
+                        {% endfor %}
+                        {% if articles.paginator.num_pages > articles.number|add:'2' %}
+                        <li class="page-item">
+                            <a class="page-link" href="{% url 'articles' %}?page={{ articles.number|add:'3' }}">...</a>
+                        </li>
+                        {% endif %}
+                    <li class="page-item {% if not articles.has_next %}disabled{% endif %}">
+                      <a class="page-link" href="{% if articles.has_next %}{% url 'articles' %}?page={{ articles.next_page_number }}{% endif %}">Вперед</a>
+                    </li>
+                  </ul>
+                </nav>
+            </div>
+        </div>
+
+        {% endif %}
     </div>
 
 {% endblock %}

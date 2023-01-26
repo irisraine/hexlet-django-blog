@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from django.db.models import Q
+from django.core.paginator import Paginator
 from hexlet_django_blog.article.models import Article
 from .forms import CommentArticleForm, ArticleForm
 
@@ -8,13 +9,16 @@ from .forms import CommentArticleForm, ArticleForm
 class IndexView(View):
     def get(self, request, *args, **kwargs):
         query = request.GET.get('q', '')
+        page = int(request.GET.get('page', '1'))
         if query:
             articles = Article.objects.filter(Q(name__icontains=query))
         else:
-            articles = Article.objects.all()[:16]
+            articles = Article.objects.all().order_by('id')
+        articles_paginator = Paginator(articles, 8)
         return render(request, 'articles/index.html', context={
-            'articles': articles,
+            'articles': articles_paginator.get_page(page),
             'query': query,
+            'num_pages': articles_paginator.num_pages
         })
 
 
