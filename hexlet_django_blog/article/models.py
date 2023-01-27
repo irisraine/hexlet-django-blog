@@ -8,3 +8,10 @@ class Article(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Comment(models.Model):
+    author = models.CharField(max_length=64, blank=True)  # имя автора
+    body = models.TextField()  # тело комментария
+    timestamp = models.DateTimeField(auto_now_add=True)
+    commented_article = models.ForeignKey(Article, on_delete=models.CASCADE)

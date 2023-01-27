@@ -1,5 +1,6 @@
 {% extends 'layout/default.html' %}
 
+{% block article_list %}active{% endblock %}
 {% block title %}Список статей{% endblock %}
 {% block content %}
     <div class="container">
@@ -11,11 +12,11 @@
             <div class="col-12 col-md-4 col-lg-3 mb-4">
                 <article class="border border-secondary rounded shadow bg-light h-100 d-flex flex-column bd-highlight p-2 mb-3" >
                     <div class="p-2 bd-highlight"><h3><a class="link-primary text-decoration-none" href="{% url 'article' article.id %}">{{ article.name }}</a></h3></div>
-                    <div class="p-2 bd-highlight">{{ article.body|slice:":200" }}</div>
+                    <div class="p-2 bd-highlight">{%if article.body|length > 200 %}{{ article.body|slice:":200" }}...{% else %}{{ article.body }}{% endif %}</div>
                     <div class="mt-auto p-2 bd-highlight">
-                        <form action="{% url 'articles_delete' article.id %}" method="post">
+                        <form action="{% url 'article_delete' article.id %}" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-danger">Удалить статью</button>
+                        <button type="submit" class="btn btn-danger btn-sm">Удалить статью</button>
                         </form>
                     </div>
                 </article>

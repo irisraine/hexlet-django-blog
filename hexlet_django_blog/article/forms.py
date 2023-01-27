@@ -1,10 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Article
-
-
-class CommentArticleForm(forms.Form):
-    content = forms.CharField(label='Текст комментария')
+from .models import Article, Comment
 
 
 class ArticleForm(ModelForm):
@@ -14,4 +10,14 @@ class ArticleForm(ModelForm):
         labels = {
             'name': 'Имя',
             'body': 'Текст статьи'
+        }
+
+
+class CommentArticleForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['author', 'body']
+        labels = {
+            'author': 'Автор',
+            'body': 'Текст комментария'
         }

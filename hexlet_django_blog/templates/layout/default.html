@@ -26,13 +26,13 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <ul class="navbar-nav me-auto mb-2 mb-md-0">
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'articles' %}">Список статей</a>
+          <a class="nav-link {% block article_list %}{% endblock %}" href="{% url 'articles' %}">Список статей</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'articles_create' %}">Разместить свою статью</a>
+          <a class="nav-link {% block article_creation %}{% endblock %}" href="{% url 'article_create' %}">Разместить свою статью</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'about' %}">О блоге</a>
+          <a class="nav-link {% block info %}{% endblock %}" href="{% url 'about' %}">О блоге</a>
         </li>
       </ul>
         <form class="d-flex" action="{% url 'articles' %}" method="get">

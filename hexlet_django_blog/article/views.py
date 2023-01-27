@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from django.db.models import Q
 from django.core.paginator import Paginator
-from hexlet_django_blog.article.models import Article
+from hexlet_django_blog.article.models import Article, Comment
 from .forms import CommentArticleForm, ArticleForm
 
 
@@ -25,21 +25,37 @@ class IndexView(View):
 class ArticleView(View):
     def get(self, request, *args, **kwargs):
         article = get_object_or_404(Article, id=kwargs['id'])
+        comments = article.comment_set.all()
         return render(request, 'articles/show.html', context={
-            'article': article
+            'article': article,
+            'comments': comments
         })
 
 
 class CommentArticleView(View):
     def get(self, request, *args, **kwargs):
+        article_id = kwargs['id']
         form = CommentArticleForm()
+        article = Article.objects.get(id=article_id)
         return render(request, 'comment.html', context={
             'form': form,
-            'id': kwargs['id']
+            'id': kwargs['id'],
+            'article_name': article.name
         })
 
+    def post(self, request, *args, **kwargs):
+        article_id = kwargs['id']
+        form = CommentArticleForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            if not comment.author:
+                comment.author = "Анон"
+            comment.commented_article = Article.objects.get(id=article_id)
+            comment.save()
+        return redirect('article', id=article_id)
 
-class ArticleFormCreateView(View):
+
+class ArticleCreateView(View):
     def get(self, request, *args, **kwargs):
         form = ArticleForm()
         return render(request, 'articles/create.html', {'form': form})
@@ -52,7 +68,7 @@ class ArticleFormCreateView(View):
         return render(request, 'articles/create.html', {'form': form})
 
 
-class ArticleFormEditView(View):
+class ArticleEditView(View):
     def get(self, request, *args, **kwargs):
         article_id = kwargs.get('id')
         article = Article.objects.get(id=article_id)
@@ -69,10 +85,20 @@ class ArticleFormEditView(View):
         return render(request, 'articles/update.html', {'form': form, 'article_id': article_id})
 
 
-class ArticleFormDeleteView(View):
+class ArticleDeleteView(View):
     def post(self, request, *args, **kwargs):
         article_id = kwargs.get('id')
         article = Article.objects.get(id=article_id)
         if article:
             article.delete()
         return redirect('articles')
+
+
+class CommentArticleDeleteView(View):
+    def post(self, request, *args, **kwargs):
+        article_id = kwargs.get('id')
+        comment_id = kwargs.get('comment_id')
+        article = Article.objects.get(id=article_id)
+        comment = Comment.objects.get(commented_article=article, id=comment_id)
+        comment.delete()
+        return redirect('article', id=article_id)

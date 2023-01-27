@@ -1,6 +1,7 @@
 {% extends 'layout/default.html' %}
 {% load django_bootstrap5 %}
 
+{% block article_creation %}active{% endblock %}
 {% block title %}Добавление статьи{% endblock %}
 {% block content %}
 
@@ -17,7 +18,7 @@
 <div class="container">
     <div class="row">
         <div class="col-6 mx-auto">
-            <form action="{% url 'articles_create' %}" method="post">
+            <form action="{% url 'article_create' %}" method="post">
                 {% csrf_token %}
                 {% bootstrap_form form %}
                 <button type="submit" class="btn btn-primary">Создать</button>

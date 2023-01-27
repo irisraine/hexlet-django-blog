@@ -2,19 +2,56 @@
 
 {% block content %}
 
-<div class="card">
-  <div class="card-header">
-    <div class="d-flex justify-content-between">
-      <div><i>Статья</i></div>
-      <div><i>Время размещения: {{ article.timestamp }}</i></div>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="card md-3">
+        <div class="card-header">
+          <div class="d-flex justify-content-between">
+            <div><i>Статья</i></div>
+            <div><i>Время размещения: {{ article.timestamp }}</i></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <h1 class="card-title">{{ article.name }}</h1>
+          <p class="card-text">{{ article.body }}</p>
+          <a href="{% url 'article_update' article.id %}" class="btn btn-warning" role="button">Отредактировать статью</a>
+          <a href="{% url 'comment_create' article.id %}" class="btn btn-success" role="button">Оставить комментарий</a>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="card-body">
-    <h1 class="card-title">{{ article.name }}</h1>
-    <p class="card-text">{{ article.body }}</p>
-    <a href="{% url 'articles_update' article.id %}" class="btn btn-warning" role="button">Отредактировать статью</a>
-    <a href="{% url 'comment_create' article.id %}" class="btn btn-success" role="button">Оставить комментарий</a>
+  <div class="row">
+      {% if comments %}
+      <div class="col md-5">
+        <div class="h3 m-3 text-center"><i>Комментарии</i></div>
+        {% for comment in comments %}
+        <div class="d-flex justify-content-center">
+          <div class="card text-dark bg-light w-75 mb-3">
+          <div class="card-header">
+            <div class="d-flex justify-content-between">
+            <div><i>Комментарий</i></div>
+            <div><i>Время размещения: {{ comment.timestamp }}</i></div>
+          </div>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title"><i>Автор: {{comment.author}}</i></h5>
+            <p class="card-text">{{comment.body}}</p>
+            <div class="d-flex justify-content-end p-2 bd-highlight">
+              <form action="{% url 'comment_delete' article.id comment.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-sm">Удалить комментарий</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
   </div>
 </div>
 
 {% endblock %}
+
+
