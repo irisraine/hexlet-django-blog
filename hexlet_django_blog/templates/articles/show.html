@@ -9,7 +9,7 @@
         <div class="card-header">
           <div class="d-flex justify-content-between">
             <div><i>Статья</i></div>
-            <div><i>Время размещения: {{ article.timestamp }}</i></div>
+            <div><i>Время размещения: {{ article.timestamp|date:'Y-m-d H:i' }}</i></div>
           </div>
         </div>
         <div class="card-body">
@@ -31,7 +31,7 @@
           <div class="card-header">
             <div class="d-flex justify-content-between">
             <div><i>Комментарий</i></div>
-            <div><i>Время размещения: {{ comment.timestamp }}</i></div>
+            <div><i>Время размещения: {{ comment.timestamp|date:'Y-m-d H:i' }}</i></div>
           </div>
           </div>
           <div class="card-body">
